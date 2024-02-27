@@ -79,14 +79,27 @@ chrome.action.onClicked.addListener((tab) => {
         }
       };
 
-      let remainingTweets = document.querySelectorAll('[data-testid="tweet"]');
-      while (remainingTweets.length > 0) {
-        deleteOldestTweet();
-        await scrollToBottom();
-        // Sleep
+      const deleteAllReachableTweets = async () => {
+        let remainingTweets = document.querySelectorAll('[data-testid="tweet"]');
+        while (remainingTweets.length > 0) {
+          deleteOldestTweet();
+          await scrollToBottom();
+          // Sleep
+          await new Promise(r => setTimeout(r, 2500));
+          remainingTweets = document.querySelectorAll('[data-testid="tweet"]');
+          console.log('Deleted ' + deletedCount + ' Tweets so far.');
+        }
+      };
+
+      deleteAllReachableTweets();
+
+      // Assume we have delete everything we could in here. Now try the
+      // "replies" tab.
+      const tabs = document.querySelectorAll('[role="tab"]');
+      if (tabs && tabs[1]) {
+        tabs[1].click();
         await new Promise(r => setTimeout(r, 2500));
-        remainingTweets = document.querySelectorAll('[data-testid="tweet"]');
-        console.log('Deleted ' + deletedCount + ' Tweets so far.');
+        deleteAllReachableTweets();
       }
   }});
 });
