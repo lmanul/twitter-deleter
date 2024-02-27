@@ -1,0 +1,29 @@
+{
+    "manifest_version": 3,
+    "name": "Twitter Deleter",
+    "version": "0.1",
+    "author": {
+      "name": "Manu Cornet"
+    },
+    "description": "Delete Tweet after Tweet after Tweet",
+    "background": {
+      "service_worker": "background.js"
+    },
+    "icons": {
+        "128": "icons/128.png"
+    },
+    "action": {
+        "default_title": "Start deleting",
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "icons/16.png",
+            "48": "icons/48.png"
+        }
+    },
+    "host_permissions": [
+      "https://twitter.com/*"
+    ],
+    "permissions": [
+        "tabs"
+    ]
+}
