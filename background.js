@@ -44,7 +44,7 @@ chrome.action.onClicked.addListener((tab) => {
         // Let's see if this is a retweet.
         const unretweetButton = oldestTweet.querySelector('[data-testid="unretweet"]');
         if (unretweetButton) {
-          retweetButton.click();
+          unretweetButton.click();
           await new Promise(r => setTimeout(r, 1000));  // Sleep
           const confirm = document.querySelector('[data-testid="unretweetConfirm"]');
           confirm.click();
