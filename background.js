@@ -2,6 +2,7 @@ chrome.action.onClicked.addListener((tab) => {
   if (!tab.url.includes('twitter.com')) {
     // We can't do much if this isn't Twitter.
     console.warn('Wrong tab, sorry!');
+    return;
   }
 
   chrome.scripting.executeScript({
@@ -22,12 +23,11 @@ chrome.action.onClicked.addListener((tab) => {
         while (Math.round(window.scrollY) < scrollableHeight) {
           // Scroll down.
           window.scrollTo(0, document.body.scrollHeight);
-          // Sleep
-          await new Promise(r => setTimeout(r, 5000));
+          await new Promise(r => setTimeout(r, 5000));  // Sleep
           scrollableHeight =
               document.documentElement.scrollHeight - window.innerHeight
         }
-        // Re-scroll up a tiny bit so we can see what's happening.
+        // Re-scroll up a tiny bit so we can better see what's happening.
         window.scrollTo(0, document.body.scrollHeight - scrollMargin);
       };
 
@@ -37,11 +37,11 @@ chrome.action.onClicked.addListener((tab) => {
       let deletedCount = 0;
       const deleteOldestTweet = async () => {
         const tweets = document.querySelectorAll('[data-testid="tweet"]');
-        const oldestTweet = tweets[tweets.length - 1];
         if (!tweets.length) {
           alert('I did not find any Tweets here.');
           return;
         }
+        const oldestTweet = tweets[tweets.length - 1];
 
         // Let's see if this is a retweet.
         const unretweetButton = oldestTweet.querySelector('[data-testid="unretweet"]');
@@ -58,13 +58,12 @@ chrome.action.onClicked.addListener((tab) => {
         let moreMenu = oldestTweet.querySelector('[data-testid="caret"]');
         if (moreMenu) {
           moreMenu.click();
-          let foundDelete = false;
           const menuItems = document.querySelectorAll('[role="menuitem"]');
           if (!menuItems.length) {
             return;  // Give up on this Tweet
           }
           // To avoid having to handle translations, assume the item we want
-          // is the first one.
+          // is always the first one.
           menuItems[0].click();
           await new Promise(r => setTimeout(r, 1000));  // Sleep
           const buttons = document.querySelectorAll('[role="button"]');
@@ -81,7 +80,6 @@ chrome.action.onClicked.addListener((tab) => {
       };
 
       let remainingTweets = document.querySelectorAll('[data-testid="tweet"]');
-      console.log('I see ' + remainingTweets.length + ' Tweets remaining.');
       while (remainingTweets.length > 0) {
         deleteOldestTweet();
         await scrollToBottom();
