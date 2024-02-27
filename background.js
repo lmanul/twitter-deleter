@@ -31,8 +31,10 @@ chrome.action.onClicked.addListener((tab) => {
         window.scrollTo(0, document.body.scrollHeight - scrollMargin);
       };
 
+      console.log('Scrolling to the bottom...');
       await scrollToBottom();
 
+      let deletedCount = 0;
       const deleteOldestTweet = async () => {
         const tweets = document.querySelectorAll('[data-testid="tweet"]');
         const oldestTweet = tweets[tweets.length - 1];
@@ -48,6 +50,7 @@ chrome.action.onClicked.addListener((tab) => {
           await new Promise(r => setTimeout(r, 1000));  // Sleep
           const confirm = document.querySelector('[data-testid="unretweetConfirm"]');
           confirm.click();
+          deletedCount++;
           await new Promise(r => setTimeout(r, 1000));  // Sleep
           return;  // Done with this Tweet
         }
@@ -70,6 +73,7 @@ chrome.action.onClicked.addListener((tab) => {
           }
           // The Delete button is the first one.
           buttons[0].click();
+          deletedCount++;
           await new Promise(r => setTimeout(r, 1000));  // Sleep
         } else {
           console.log('Could not find a more menu');
@@ -84,6 +88,7 @@ chrome.action.onClicked.addListener((tab) => {
         // Sleep
         await new Promise(r => setTimeout(r, 2500));
         remainingTweets = document.querySelectorAll('[data-testid="tweet"]');
+        console.log('Deleted ' + deletedCount + ' Tweets so far.');
       }
   }});
 });
