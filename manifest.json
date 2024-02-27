@@ -13,8 +13,7 @@
         "128": "icons/128.png"
     },
     "action": {
-        "default_title": "Start deleting",
-        "default_popup": "popup.html",
+        "default_title": "Start deleting Tweets",
         "default_icon": {
             "16": "icons/16.png",
             "48": "icons/48.png"
@@ -24,6 +23,7 @@
       "https://twitter.com/*"
     ],
     "permissions": [
+        "scripting",
         "tabs"
     ]
 }
